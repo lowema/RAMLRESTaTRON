@@ -1,0 +1,66 @@
+#%RAML 0.8
+title: Broadcast Service Platform - Title/Images API
+version: v1
+baseUri: http://wtiod942.bskyb.com/BSP-Title/{version}
+  
+traits: !include standardTraits.raml
+resourceTypes: !include standardResources.raml
+ 
+/titles:
+  is: [ paged ]
+  type: { readOnlyCollection }
+ 
+  /{titleID}:
+    type: { collectionItem }
+    uriParameters:
+      titleID:
+        displayName: Title ID
+        type: integer
+        required: true
+       
+    /images:
+      is: [ paged ]
+      type: { readOnlyCollection }
+      get:
+        queryParameters:
+          aggregator:
+            displayName: Aggregator
+            type: string
+            description: The ID of the aggregator use to filter the image list
+            example: cmsdth
+            required: false
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    'images': [ 
+                      {
+                        'adiType': 'LAND_4_3',
+                        'description': 'Landscape 4:3',
+                        'resolution': '1024x768',
+                        'aggregator': 'cmsdth'
+                      },
+                      {
+                        'adiType': 'PORT_4_3',
+                        'description': 'Portrait 4:3',
+                        'resolution': '768x1024',
+                        'aggregator': 'cmsdth'
+                      }
+                    ]
+                  }
+     
+      /{adiType}:
+        type: { collectionItem }
+        uriParameters:
+          adiType:
+            description: ADI Usage Type
+            type: string
+            required: true
+        get:
+          responses:
+            200:
+             body:
+              image/jpeg:
+              image/png:

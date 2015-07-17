@@ -1,0 +1,19 @@
+{
+  "name": "stepEngine2",
+  "version": "0.1.0",
+  "description": "A general purpose asynchronous request management system",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mark Lowe",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "good": "^6.1.4",
+    "good-console": "^5.0.2",
+    "good-file": "^5.0.1",
+    "hapi": "~8.8.0",
+    "mongodb": "^2.0.35",
+    "raml-parser": "^0.8.11"
+  }
+}
