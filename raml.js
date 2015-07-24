@@ -1,20 +1,16 @@
 var Raml = require('raml-parser');
-var Config = require('./config.js');
+var Config = require('./config');
 var fs = require('fs');
 
 var ramlFile = Config.ramlFolder + '/' + process.argv[2];
-var jsFile = Config.pluginFolder + '/' + process.argv[2].replace('.','_') + '.js'
+var jsFile = Config.ramlExportFolder + '/' + process.argv[2].replace('.','_') + '.js'
 console.log('Attempting to process file ' + ramlFile);
 console.log('Writing to file ' + jsFile);
 console.log(' ');
 
 var outFile = fs.createWriteStream(jsFile);
-var context = {};
+//var context = {};
 
-var file = fs.createWriteStream('example.txt');
-file.write('hello, ');
-file.end('world!');
- 
 Raml.loadFile(ramlFile).then( 
 	function(data) {
 		console.log(data.title + ' ' + data.version);
@@ -30,7 +26,7 @@ Raml.loadFile(ramlFile).then(
 		console.log('Complete !');
 		
 		outFile.end('// end of generated code.');
-		console.log(context);
+//		console.log(context);
 	}, 
 	function(error) {
 		console.log('Error parsing: ' + error);

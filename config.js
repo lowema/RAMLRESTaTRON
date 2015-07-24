@@ -25,3 +25,4 @@ exports.pluginFolder = '/plugins';
 
 // server raml folder
 exports.ramlFolder = './raml';
+exports.ramlExportFolder = './plugins';
