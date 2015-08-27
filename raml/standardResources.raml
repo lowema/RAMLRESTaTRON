@@ -1,0 +1,35 @@
+- collection:
+    usage: This resourceType should be used for any collection of items
+    description: The collection of <<resourcePathName>>
+    get:
+      description: Get all <<resourcePathName>>, optionally filtered
+      responses:
+        200:
+        404:
+        500:
+    post:
+      description: Create a new <<resourcePathName | !singularize>>
+      responses:
+        202:
+        400:
+        500:
+          
+- collectionItem:
+    usage: This resourceType should be used for any single item in a collection
+    description: A single <<resourcePathName | !singularize >>
+    get:
+      description: Get a <<resourcePathName | !singularize >>
+      responses:
+        200:
+        404:
+        500:
+        
+- readOnlyCollection:
+    usage: This resourceType should be used for any collection of items
+    description: The collection of <<resourcePathName>>
+    get:
+      description: Get all <<resourcePathName>>, optionally filtered
+      responses:
+        200:
+        404:
+        500:

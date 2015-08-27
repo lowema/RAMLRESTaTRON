@@ -1,0 +1,21 @@
+- paged:
+    usage: apply to any paged result responses
+    description: Paging Parameters
+    queryParameters:
+      pageFrom:
+        displayName: Page From (Page#)
+        type: integer
+        required: false
+      pageSize:
+        displayName: Page Size (Rows)
+        type: integer
+        required: false
+        
+- asyncStatus:
+    usage: apply HTTP Header to any async request with status messages
+    description: Conversation ID
+    headers:
+      x-bsp-conversationID:
+        displayName: The conversationID used to correlate
+        type: integer
+        required: true

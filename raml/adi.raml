@@ -1,0 +1,126 @@
+#%RAML 0.8
+title: ADI Service
+version: v1.01
+baseUri: https://bapps.bskyb.com/bss/adi/{version}
+
+#traits: !include standardTraits.raml
+#resourceTypes: !include standardResources.raml
+schemas: 
+  - ADI3:       !include MD-SP-VODContainer-I01.xsd
+
+
+/{workflowType}:
+  uriParameters:
+    workflowType:
+      description: The type of workflow the ADI is stored for. Also known as an 'aggregator'
+      example: cmsdth, ottvod
+      type: string
+  /{context}:
+    uriParameters:
+      context:
+        description: The context of how the ADI is being stored. This could, for example be the original source ADI or one transformed as part of the workflow
+        enum: ['source', 'augmented']
+    post:
+      description: Creates a new ADI document
+      body:
+        application/xml:
+          schema: !include MD-SP-VODContainer-I01.xsd
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "links":{
+                    "adi": {
+                      "href": "https://bapps.bskyb.com/bss/adi/1.0/aggregators/core/contexts/source/providers/sky/assetids/12345/versions/1.0"
+                    } 
+                  }
+                }
+    /{providerId}:
+      uriParameters:
+        providerId:
+          description: The provider of the asset
+          type: string
+          example: sky, disney
+      /{assetId}:
+        uriParameters:
+          assetId:
+            description: The asset ID. For sky assets this is also the VAM asset ID
+            type: string
+            example: 0000000000996793
+        /latest:
+          description: The latest ADI
+#                  type: { collectionItem }
+          get:
+            queryParameters:
+              status: 
+                description: Filter the latest asset by status
+                example: accepted, rejected, received
+            description: Gets the latest ADI for a given title URI
+            responses:
+              200:
+                body:
+                  application/xml:
+                    schema: 
+        /versions:
+#                  type: { readOnlyCollection }
+          get:
+            description: Gets a list of available versions for a given title URI
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "versions": [
+                          "1.0", "1.1", "2.0"
+                        ],
+                        
+                        "links":{
+                          "adis": [
+                            { "href": "https://bapps.bskyb.com/bss/adi/1.0/core/source/sky/12345/1.0" },
+                            { "href": "https://bapps.bskyb.com/bss/adi/1.0/core/source/sky/12345/1.1"},
+                            { "href": "https://bapps.bskyb.com/bss/adi/1.0/core/source/sky/12345/2.0"}
+                          ] 
+                        }
+                      }                     
+                     
+        /{pvn}.{ivn}:
+          description: The ADI version - made from a combination of the provider version number and the internal version number
+          uriParameters:
+            pvn:
+              description: The provider version number
+              type: integer
+            ivn:
+              description: The internal version number
+              type: integer
+          get:
+            description: Gets the ADI for a specific version
+            responses:
+              200:
+                body:
+                  application/xml:
+          put:
+            description: Update metadata surrounding the ADI
+            body:
+              application/json:
+                example: |
+                  { 
+                    'deliveryId': 'M2345678', 
+                    'status': 'rejected'
+                  }
+            responses:
+              200:
+                description: Successfully updated
+          /status:
+            description: The validation status of the ADI
+#                     type: { collectionItem }
+            get:
+              description: Get the status of the ADI
+              responses:
+                200:
+                  body:
+                    application/json:
+                      example: |
+                        { 'status': 'accepted'}
